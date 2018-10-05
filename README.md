@@ -10,3 +10,4 @@ Using default server & port:
 
 > telnet –o localhost 1234
 ```
+Check out my other repository [More Locking](https://github.com/sandrows/more-locking), for different locking techniques. 
