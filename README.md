@@ -1,4 +1,4 @@
-#Centralized Locking
+# Centralized Locking
 
 This project is a simple implementation for a centralized locking system to manage shared resources.
 
