@@ -13,6 +13,7 @@ public class Server {
     private static final int WAIT_TIME = 10; // Seconds
 
     private static Lock addLock = new ReentrantLock(); // Addition
+    private static Lock subLock = new ReentrantLock(); // Subtraction
 
     public static void main(String[] args) throws IOException {
 
@@ -42,16 +43,16 @@ public class Server {
         @Override
         public void run() {
             while (true) {
-                srv_out.println("Acquire the addition resource? (Y/N)");
+                srv_out.println("Which resource you want to acquire? (A/B)");
                 String resource = srv_in.nextLine();
 
                 switch (resource) {
-                    case "Y":
-                    case "y":
+                    case "A":
+                    case "a":
                         try {
                             if (acquireLock(addLock)) {
                                 try {
-                                    addition(getNumbers());
+                                    addition(getNumbers("addition"));
                                 } finally {
                                     addLock.unlock();
                                 }
@@ -61,19 +62,36 @@ public class Server {
                         }
                         break;
 
-                    default:
-                        return;
+                    case "B":
+                    case "b":
+                        try {
+                            if (acquireLock(subLock)) {
+                                try {
+                                    subtraction(getNumbers("subtraction"));
+                                } finally {
+                                    subLock.unlock();
+                                }
+                            }
+                        } catch (InterruptedException ex) {
+                            ex.printStackTrace();
+                        }
+                        break;
                 }
             }
         }
 
-        // Resource
+        // Resource A
         private void addition(int[] numbers) {
             srv_out.println("Sum is: " + (numbers[0] + numbers[1]));
         }
 
-        private int[] getNumbers() {
-            srv_out.println("Enter two space-separated numbers for addition:");
+        // Resource B
+        private void subtraction(int[] numbers) {
+            srv_out.println("Difference is: " + (numbers[0] - numbers[1]));
+        }
+
+        private int[] getNumbers(String operation) {
+            srv_out.println("Enter two space separated numbers for " + operation + ":");
             String[] numbers = srv_in.nextLine().split(" ");
             int num1 = Integer.parseInt(numbers[0]);
             int num2 = Integer.parseInt(numbers[1]);

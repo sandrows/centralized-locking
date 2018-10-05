@@ -22,13 +22,7 @@ public class Client {
         while (true) {
             // Which resource?
             System.out.println(cli_in.nextLine());
-
-            if(user_input.nextLine().matches("[Yy]")) cli_out.println("Y");
-            else{
-                cli_out.println("N");
-                return;
-            }
-
+            cli_out.println(user_input.nextLine());
             System.out.println(cli_in.nextLine());
 
             // Operation
